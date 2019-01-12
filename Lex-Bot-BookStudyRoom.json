@@ -1,0 +1,162 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0",
+    "importType": "LEX",
+    "importFormat": "JSON"
+  },
+  "resource": {
+    "name": "BookStudyRoom",
+    "version": "5",
+    "intents": [
+      {
+        "rejectionStatement": {
+          "messages": [
+            {
+              "contentType": "PlainText",
+              "content": "Ok! I'll cancel your request!"
+            }
+          ]
+        },
+        "name": "BookStudyRoom",
+        "version": "30",
+        "fulfillmentActivity": {
+          "type": "ReturnIntent"
+        },
+        "sampleUtterances": [
+          "book a room for {sessions} near {roomLocation}",
+          "book a room near {roomLocation} for {sessions}",
+          "book for {sessions} at {roomLocation}",
+          "book in {roomLocation} for {sessions}",
+          "{roomLocation} for {sessions}",
+          "{sessions} at {roomLocation}"
+        ],
+        "slots": [
+          {
+            "sampleUtterances": [],
+            "slotType": "RoomLocations",
+            "slotTypeVersion": "1",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "Which location?"
+                }
+              ],
+              "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[]}",
+              "maxAttempts": 2
+            },
+            "priority": 2,
+            "name": "roomLocation"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "BookingSessions",
+            "slotTypeVersion": "1",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "Which Session?"
+                }
+              ],
+              "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[]}",
+              "maxAttempts": 2
+            },
+            "priority": 1,
+            "name": "sessions"
+          }
+        ],
+        "confirmationPrompt": {
+          "messages": [
+            {
+              "contentType": "PlainText",
+              "content": "So i book the {sessions} at {roomLocation}?"
+            }
+          ],
+          "maxAttempts": 3
+        },
+        "dialogCodeHook": {
+          "uri": "arn:aws:lambda:us-east-1:622573720854:function:validate",
+          "messageVersion": "1.0"
+        }
+      }
+    ],
+    "slotTypes": [
+      {
+        "description": "Locations to find study rooms",
+        "name": "RoomLocations",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "merchant ventures",
+            "synonyms": []
+          },
+          {
+            "value": "social sciences",
+            "synonyms": []
+          },
+          {
+            "value": "queens",
+            "synonyms": []
+          },
+          {
+            "value": "senate house",
+            "synonyms": []
+          },
+          {
+            "value": "hawthorns",
+            "synonyms": []
+          }
+        ],
+        "valueSelectionStrategy": "TOP_RESOLUTION"
+      },
+      {
+        "description": "Sesison One and Session Two",
+        "name": "BookingSessions",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "Session 2",
+            "synonyms": []
+          },
+          {
+            "value": "Session One",
+            "synonyms": []
+          },
+          {
+            "value": "Session Two",
+            "synonyms": []
+          },
+          {
+            "value": "Session 1",
+            "synonyms": []
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      }
+    ],
+    "voiceId": "Matthew",
+    "childDirected": false,
+    "locale": "en-US",
+    "idleSessionTTLInSeconds": 300,
+    "clarificationPrompt": {
+      "messages": [
+        {
+          "contentType": "PlainText",
+          "content": "Sorry, can you please repeat that?"
+        }
+      ],
+      "maxAttempts": 5
+    },
+    "abortStatement": {
+      "messages": [
+        {
+          "contentType": "PlainText",
+          "content": "Sorry, I could not understand. Goodbye."
+        }
+      ]
+    }
+  }
+}
