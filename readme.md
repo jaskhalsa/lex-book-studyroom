@@ -21,7 +21,7 @@ Sample Utterances:
 
 To test the application for load testing etc:
 
-1. API Endpoint: https://tim57d9gge.execute-api.us-east-1.amazonaws.com
+1. API Endpoint: https://tim57d9gge.execute-api.us-east-1.amazonaws.com/external_test/
 2. Example JSON payload:
 {
   "currentIntent": {
