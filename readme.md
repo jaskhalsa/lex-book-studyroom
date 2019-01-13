@@ -35,7 +35,18 @@ To test the application for load testing etc:
   "invocationSource": "DialogCodeHook"
 }
 
-roomLocation and sessions can be any of the specified locations and session types as mentioned above.
+Guide to the Slack application:
+
+1. Download Slack from Android/Apple Store or Visit https://slack.com/ from a browser.
+2. Click on Sign in.
+3. Enter bristolstudents.slack.com as the workspace's Slack URL. (Just type in bristolstudents in the textbox on the page/app).
+4. Use the below mentioned dummy Slack credentials to login into the channel and use the application:
+    username: bookstudy2019@gmail.com
+    password: cloud@2019
+5. After sign in, go to Apps hosted in Slack (bottom of the left panel in the Slack app/web-page). Find book_study_room in the apps section.
+6. Click on book_study_room app and follow the below instructions to start a text-based chat with the bot.
+
+The roomLocation and sessions can be any of the specified locations and session types as mentioned above.
 
 If load testing with locust, use the locustfile in this repository and run with the following:
 locust --host=https://tim57d9gge.execute-api.us-east-1.amazonaws.com
