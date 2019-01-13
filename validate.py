@@ -115,7 +115,7 @@ def attempt_booking(session_type, location, room_table, location_table):
                 room_table.update_item(Key={"roomID": roomNumbers[i]},
                     UpdateExpression=sessionString,
                     ExpressionAttributeValues={
-                        ':r': 'true',
+                        ':r': True,
                     },
                     ReturnValues="UPDATED_NEW"
                 )
@@ -149,21 +149,18 @@ def build_validation_result(isvalid, violated_slot, message_content):
 
 
 
-def validate_room(slots):
-    location = try_ex(lambda: slots['roomLocation'])
-    sessions = try_ex(lambda: slots['sessions'])
-
-    if location and not isvalid_location(location.lower()):
+def validate_room(location, sessions):
+    if location == None or not isvalid_location(location.lower()):
         return build_validation_result(
             False,
             'roomLocation',
-            'We currently do not support {} as a valid destination.  Can you try a different building?'.format(location)
+            'We currently do not support that building.  Can you try a different building?'
         )
-    if sessions and not book_session(sessions.lower(), location.lower()):
+    if sessions == None or not book_session(sessions.lower(), location.lower()):
         return build_validation_result(
             False,
             'sessions',
-            '{}  is unavailable at requested location. Please try with the other session.'.format(sessions)
+            'That session is unavailable at requested location. Please try with the other session.'
         )
 
     return {'isValid': True}
@@ -192,7 +189,7 @@ def book_room(intent_request):
 
     if intent_request['invocationSource'] == 'DialogCodeHook':
         # Validate any slots which have been specified.  If any are invalid, re-elicit for their value
-        validation_result = validate_room(intent_request['currentIntent']['slots'])
+        validation_result = validate_room(location, sessions)
         if not validation_result['isValid']:
             slots = intent_request['currentIntent']['slots']
             slots[validation_result['violatedSlot']] = None
@@ -217,14 +214,15 @@ def book_room(intent_request):
     randomNumber = random.randint(1, 28)
     confirmationString = 'Room {} has been successfully booked at {} for {}'.format(randomNumber, location, sessions)
 
-    return close(
-        session_attributes,
-        'Fulfilled',
-        {
-            'contentType': 'PlainText',
-            'content': confirmationString
-        }
-    )
+    if (intent_request['invocationSource'] == 'FulfillmentCodeHook'):
+        return close(
+            session_attributes,
+            'Fulfilled',
+            {
+                'contentType': 'PlainText',
+                'content': confirmationString
+            }
+        )
 
 # --- Intents ---
 
